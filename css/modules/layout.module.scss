@@ -1,0 +1,126 @@
+
+
+@keyframes helix-cycle {
+    0% {
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dashoffset: var(--helix-length);
+    }
+}
+
+.layout {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    --helix-length: 1489.970947265625;
+}
+
+.layout-fullScreen {
+    --layout-fullscreen-max-width: 1000px;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: [content] auto;
+    grid-template-rows: [content] auto;
+    overflow-x: hidden;
+}
+
+.content {
+    grid-area: content;
+}
+
+.section {
+    text-align: left;
+    padding: var(--space-large);
+    overflow: hidden;
+    position: relative;
+
+    &:first-child {
+        width: 40vw;
+    }
+
+    &:last-child {
+        width: 60vw;
+    }
+}
+
+.sectionContent {
+    
+    &:before, &:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        content: "";
+        height: 200px;
+        background: linear-gradient(-180deg, var(--color-background), rgba(255, 255, 255, 0));
+        z-index: 100;
+        pointer-events: none;
+    }
+
+    &:after {
+        top: auto;
+        bottom: 0;
+        background: linear-gradient(0, var(--color-background), rgba(255, 255, 255, 0));
+    }
+}
+
+.sectionGraphic {
+    padding: 0;
+    background: var(--color-yellow);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    &:after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        content: "";
+        background: url("/dust.jpeg") center repeat;
+        z-index: 2;
+        mix-blend-mode: color-burn;
+        opacity: 1;
+    }
+
+    svg {
+        height: 110%;
+        width: auto;
+        
+        
+        &:first-child {
+            mix-blend-mode: color-dodge;
+            opacity: 0.3;
+        }
+
+        &:last-child {
+            position: absolute;
+            mix-blend-mode: color-dodge;
+            opacity: 0.7;
+            
+            path {
+                stroke-dasharray: calc(var(--helix-length) / 2) calc(var(--helix-length) / 2) ;
+                stroke-dashoffset: 0;
+                animation: helix-cycle linear infinite 20s;
+            }
+        }
+    }
+
+    &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        content: "";
+        background: conic-gradient(from 180deg at 50% 50%, #FCEF63 0deg, #E1DED3 75.7deg, #E5D3CC 180.51deg, #6363AA 274.82deg, rgba(217, 217, 217, 0) 360deg);
+        mix-blend-mode: color;
+        opacity: 0.5;
+    }
+}

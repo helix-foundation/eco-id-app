@@ -1,0 +1,44 @@
+.accountBanner {
+    position: fixed;
+    bottom: var(--space-large);
+    right: var(--space-large); 
+    background-color: var(--color-background-shade);
+    padding: var(--space-normal);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--anim-curve-ease-out) var(--anim-duration-long);
+    transform: translateY(calc(100% + var(--space-large)));
+    transition-delay: 0.75s;
+    min-width: 230px;
+    box-shadow: 0 0 50px 18px var(--color-background);
+    border-radius: calc(var(--border-radius-default) / 2);
+
+    &-isVisible {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+    }
+
+    label {
+        font-weight: 600;
+        font-size: var(--font-size-small);
+        text-transform: uppercase;
+        color: var(--color-accent);
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+        margin-left: -2px;
+
+        path {
+            stroke: var(--color-white);
+        }
+
+        circle {
+            stroke: var(--color-accent);
+            fill: var(--color-accent);
+        }
+    }
+}

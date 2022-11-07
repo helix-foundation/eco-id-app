@@ -1,0 +1,15 @@
+.spacer {
+    height: var(--space-normal);
+
+    &-small {
+        height: var(--space-small);
+    }
+
+    &-large {
+        height: var(--space-large);
+    }
+
+    &-xlarge {
+        height: var(--space-xlarge);
+    }
+}

@@ -1,0 +1,18 @@
+
+.block {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-background);
+    z-index: 9999;
+    transition: opacity ease-out 2s;
+    transition-delay: 1s;
+    opacity: 1;
+}
+
+.blockLoaded {
+    opacity: 0;
+    pointer-events: none;
+}
