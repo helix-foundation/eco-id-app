@@ -3,8 +3,6 @@ This app is designed to allow community members to claim their Eco IDs that repr
 Users must first connect a web3 wallet to interact with the app by clicking Connect Wallet.
 Once connected, users can who verify their social accounts. Verified users are then able to claim their Eco IDs.
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).`
-
 ## Getting Started
 
 After cloning the repo, run npm install to install all required packages.
@@ -20,15 +18,6 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Configuration
 In order to sync to a specific deployment of contracts, this app requires the following to be set up:
@@ -68,3 +57,9 @@ npm start
 # or
 yarn start
 ``` 
+
+## Contributing
+Contributions are welcome. Please submit any issues as issues on GitHub, and open a pull request with any contributions.
+
+## License
+[MIT (c) Helix Foundation](./LICENSE)
