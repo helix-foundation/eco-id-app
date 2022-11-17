@@ -29,14 +29,16 @@ const Error: NextPage = () => {
 
     useEffect(() => {
         if (router.query && router.query.errorCode) {
-
             const code = router.query.errorCode as string;
 
             // get description based on error code
-            let description = EcoErrors[code] || "";
-
-            setError({ code, description });
-
+            let description = EcoErrors[code];
+            if (description) {
+                setError({ 
+                    code, 
+                    description
+                });
+            }
         }
     }, [router.query]);
 
@@ -48,15 +50,13 @@ const Error: NextPage = () => {
             <div className="flex justify-center">
                 <div className="w-7/12 max-w-4xl flex flex-col gap-6 text-lg text-center">
                     <div className="text-3xl font-medium mb-2" >Something went wrong while verifying your account</div>
+                    <br/>
                     {error && (
                         <div className="text-xl font-small mb-2" >
                             {error.description}
-                            <br />
-                            <br />
-                            Code: {error.code}
                         </div>
-
                     )}
+                    <br/>
                     <div className="align-center">
                         <Link href="/" >
                             <button>Back to Home</button>
