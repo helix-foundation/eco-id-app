@@ -72,10 +72,13 @@ function App({ Component, pageProps }: AppProps) {
     const [isMobile, setIsMobile] = useState(null);
 
     const [shouldShowHelp, setShouldShowHelp] = useState(false);
+    const [unsecure, setUnsecure] = useState(true);
 
     useEffect(() => {
         const isMobileDevice = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
         setIsMobile(isMobileDevice);
+        
+        setUnsecure(window.self !== window.top);
     }, [])
 
     if (isMobile === null) {
@@ -83,7 +86,7 @@ function App({ Component, pageProps }: AppProps) {
     }
 
     return (
-        window.self !== window.top ?
+        unsecure ?
             <UnsecureGate/>
             :
         isMobile ?
