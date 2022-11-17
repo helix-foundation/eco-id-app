@@ -1,13 +1,11 @@
-
 import classnames from 'classnames';
-
 
 import { upperFirst } from "lodash";
 import { useRouter } from 'next/router';
 import styles from "../css/modules/layout.module.scss";
 import Header from "./header";
 import HStack, { StackGapSize } from './hstack';
-import AccountBanner, { AccountContext } from './LinkedAccountInfo';
+import AccountBanner, { AccountContext, ConnectedApp } from "./LinkedAccountInfo";
 import { MintContext } from './mint';
 import NFTViewer from './NftViewer';
 import VStack from './vstack';
@@ -28,12 +26,15 @@ const HelixLayout = ({ children }: LayoutType) => {
 
     const username = (account) => {
         if (!account.username) {
-            return ""
+            return "";
         }
-        return `${account.app === "twitter" ? "@" : ""}${account.username}`;
+        return `${account.app === ConnectedApp.Twitter ? "@" : ""}${account.username}`;
     }
 
     const userId = (account) => {
+        if (isNaN(account.userid)) {
+            return "";
+        }
         const id = account.userid as string;
         return `${id.slice(0, 4)} •••• ${id.slice(id.length - 4, id.length)}`;
     }
@@ -75,7 +76,7 @@ const HelixLayout = ({ children }: LayoutType) => {
                                     </HStack>
 
                                     <HStack>
-                                        <p>{userId(account)} <span className="text-color-light">({username(account)})</span></p>
+                                        <p>{userId(account)}</p>
                                     </HStack>
                                     <HStack>
                                         <p className="text-color-light text-size-small"><a className="text-color-normal" onClick={handleDisconnect} href="#">Disconnect</a></p>

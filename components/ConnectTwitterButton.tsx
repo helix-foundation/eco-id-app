@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import React from "react";
 import Button from "./button";
-import HStack from "./hstack";
 import pkceChallenge from "pkce-challenge";
 import { stringify } from "querystring";
 import { useAccount } from "wagmi";
+import { ConnectedApp } from "./LinkedAccountInfo";
 
-type ConnectTwitterButtonProps = {
-    buttonType?: 'primary' | 'secondary'
-}
-
-const ConnectTwitterButton = ({ buttonType = 'primary' }: ConnectTwitterButtonProps) => {
-    const [isTwitterConnected, setTwitterConnected] = useState(false);
-
+const ConnectTwitterButton: React.FC = () => {
     const { address } = useAccount();
-    
+
     const verifyTwitter = async () => {
         const pkce = pkceChallenge();
 
@@ -27,7 +19,7 @@ const ConnectTwitterButton = ({ buttonType = 'primary' }: ConnectTwitterButtonPr
             scope: oAuthScope,
             code_challenge: pkce.code_challenge,
             code_challenge_method: "plain",
-            state: stringify({ recipient: address, app: 'twitter', client_uri: window.location.origin, code_verifier: pkce.code_challenge })
+            state: stringify({ recipient: address, app: ConnectedApp.Twitter, client_uri: window.location.origin, code_verifier: pkce.code_challenge })
         });
 
         window.location.href = `https://twitter.com/i/oauth2/authorize?${oAuthData}`
