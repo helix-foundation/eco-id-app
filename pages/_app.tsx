@@ -27,6 +27,7 @@ import HelpOverlay, { HelpOverlayContext } from "components/HelpOverlay";
 import Head from "next/head";
 import UIBlock, { UIBlockContext } from "components/UIBlock";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import UnsecureGate from "components/UnsecureGate";
 
 const client = new ApolloClient({
     uri: process.env.NEXT_PUBLIC_SUBGRAPH_URI,
@@ -82,6 +83,9 @@ function App({ Component, pageProps }: AppProps) {
     }
 
     return (
+        window.self !== window.top ?
+            <UnsecureGate/>
+            :
         isMobile ?
             <MobileGate />
             :
