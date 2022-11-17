@@ -1,18 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { BigNumber, ethers, utils, TypedDataDomain, TypedDataField } from "ethers";
+import { BigNumber, ethers, TypedDataDomain, TypedDataField, utils } from "ethers";
 
 import { useRouter } from "next/router";
 import { useAccount, useProvider, useSigner } from "wagmi";
 
-import { download, txError } from "../utilities";
-
-import { toast } from "../utilities";
+import { download, toast, txError } from "../utilities";
 
 import Button from "components/button";
 import Copy from "components/copy";
 import HStack, { StackGapSize } from "components/hstack";
-import { AccountContext } from "components/LinkedAccountInfo";
+import { AccountContext, ConnectedApp } from "components/LinkedAccountInfo";
 import Spacer from "components/spacer";
 import { TimelineHeader } from "components/timeline";
 import VStack from "components/vstack";
@@ -40,7 +38,7 @@ const Register = ({ isActive }: RegisterProps) => {
     const provider = useProvider();
     const ecoID = useEcoID();
 
-    const { username, deadline, nonce, userid, fee, recipient, app, verifier, verifySig, setApp, setFee, setRecipient, setUserid, setUsername, setDeadline, setNonce, setVerifier, setVerifySig } = useContext(AccountContext);
+    const { username, deadline, nonce, userid, fee, recipient, app, verifier, verifySig, setApp, setRecipient, setUserid, setUsername, setDeadline, setNonce, setVerifier, setVerifySig } = useContext(AccountContext);
     const verifiedClaim = useVerifiedClaim(`${app}:${userid}`);
 
     const [approvedAmount, setApprovedAmount] = useState<BigNumber>(BigNumber.from(0));
@@ -183,21 +181,64 @@ const Register = ({ isActive }: RegisterProps) => {
         });
 
     }
-
+    
     useEffect(() => {
-        const { username, deadline, nonce, userid, fee, recipient, app, verifier, verifySig } = router.query;
+        if (Object.keys(router.query).length <= (router.query.fromIntro ? 1 : 0)) {
+            setUsername(null);
+            setDeadline(null);
+            setNonce(null);
+            setUserid(null);
+            setRecipient(null);
+            setApp(null);
+            setVerifier(null);
+            setVerifySig(null);
+            return;
+        }
 
-        setUsername(username as string);
-        setDeadline(parseInt(deadline as string));
-        setNonce(parseInt(nonce as string));
-        setUserid(userid as string);
-        setFee(BigNumber.from(fee || 0));
-        setRecipient(recipient as string);
-        setApp(app as string);
-        setVerifier(verifier as string);
-        setVerifySig(verifySig as string);
+        const {
+            username,
+            deadline,
+            nonce,
+            userid,
+            recipient,
+            app,
+            verifier,
+            verifySig,
+        } = router.query;
 
-    }, [router.query, signer]);
+        const validDiscordUsername = /^.{3,32}$/;
+        const validDiscordUserid = /^.{3,32}$/;
+
+        const validTwitterUsername = /^[A-Za-z0-9_]{4,15}$/;
+
+        if (
+          ![ConnectedApp.Discord, ConnectedApp.Twitter].includes(
+            app as ConnectedApp
+          ) ||
+          (app === ConnectedApp.Discord &&
+            (!validDiscordUsername.test(username as string) ||
+              !validDiscordUserid.test(userid as string))) ||
+          (app === ConnectedApp.Twitter &&
+            !validTwitterUsername.test(username as string))
+        ) {
+            console.warn('invalid query params');
+            router.replace('/mint', undefined, { shallow: true});
+        }
+        else if (address !== recipient) {
+            console.warn('connected wallet is not recipient');
+            router.replace('/mint', undefined, { shallow: true});
+        }
+        else {
+            setUsername(username as string);
+            setDeadline(parseInt(deadline as string));
+            setNonce(parseInt(nonce as string));
+            setUserid(userid as string);
+            setRecipient(recipient as string);
+            setApp(app as ConnectedApp);
+            setVerifier(verifier as string);
+            setVerifySig(verifySig as string);
+        }
+    }, [router.query, address]);
 
     useEffect(() => {
         if (verifiedClaim) {

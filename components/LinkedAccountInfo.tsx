@@ -1,4 +1,4 @@
-import React, { ReactNode, Dispatch } from "react";
+import React, { ReactNode } from "react";
 import styles from "css/modules/accountBanner.module.scss";
 import classNames from "classnames";
 import { BigNumber } from "ethers";
@@ -7,6 +7,11 @@ type AccountBannerProps = {
     children: ReactNode;
     isVisible: boolean;
 };
+
+export enum ConnectedApp {
+  Discord = 'discord',
+  Twitter = 'twitter'
+}
 
 const AccountBanner = ({ children, isVisible }: AccountBannerProps) => {
     return (
@@ -24,7 +29,7 @@ export const AccountContext = React.createContext<
         userid?: string,
         fee?: BigNumber,
         recipient?: string,
-        app?: string,
+        app?: ConnectedApp,
         verifier?: string,
         verifySig?: string,
         setUsername: (_: string) => void,
@@ -33,7 +38,7 @@ export const AccountContext = React.createContext<
         setUserid: (_: string) => void,
         setFee: (_: BigNumber) => void,
         setRecipient: (_: string) => void,
-        setApp: (_: string) => void,
+        setApp: (_: ConnectedApp) => void,
         setVerifier: (_: string) => void,
         setVerifySig: (_: string) => void,
     }
