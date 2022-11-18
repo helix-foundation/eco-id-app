@@ -27,6 +27,7 @@ import HelpOverlay, { HelpOverlayContext } from "components/HelpOverlay";
 import Head from "next/head";
 import UIBlock, { UIBlockContext } from "components/UIBlock";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import UnsecureGate from "components/UnsecureGate";
 
 const client = new ApolloClient({
     uri: process.env.NEXT_PUBLIC_SUBGRAPH_URI,
@@ -71,10 +72,13 @@ function App({ Component, pageProps }: AppProps) {
     const [isMobile, setIsMobile] = useState(null);
 
     const [shouldShowHelp, setShouldShowHelp] = useState(false);
+    const [unsecure, setUnsecure] = useState(true);
 
     useEffect(() => {
         const isMobileDevice = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
         setIsMobile(isMobileDevice);
+        
+        setUnsecure(window.self !== window.top);
     }, [])
 
     if (isMobile === null) {
@@ -82,6 +86,9 @@ function App({ Component, pageProps }: AppProps) {
     }
 
     return (
+        unsecure ?
+            <UnsecureGate/>
+            :
         isMobile ?
             <MobileGate />
             :
