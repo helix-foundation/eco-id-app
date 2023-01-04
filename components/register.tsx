@@ -248,6 +248,22 @@ const Register = ({ isActive }: RegisterProps) => {
         }
     }, [verifiedClaim]);
 
+    useEffect(() => {
+        if (!(verifiedClaim || isLoading || isRegistered) && deadline && Date.now() < deadline*1000) {
+            const deadlineTimer = setTimeout(() => {
+                router.replace('/mint', undefined, { shallow: true});
+                toast({
+                    title: "Verifier signature expired",
+                    body: (<>
+                        Please reconnect your discord or twitter
+                    </>),
+                    intent: 'danger'
+                })
+            }, deadline*1000 - Date.now());
+            return () => clearTimeout(deadlineTimer);
+        }
+    }, [verifiedClaim, isLoading, isRegistered, deadline]);
+
     const checkApproval = async () => {
         setIsLoading(true);
         try {
