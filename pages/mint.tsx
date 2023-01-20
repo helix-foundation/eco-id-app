@@ -50,7 +50,7 @@ const Home: NextPage = () => {
     const mintContext = useContext(MintContext);
 
     const { address } = useAccount();
-    const verifiedClaim = useVerifiedClaim(`${account.app}:${account.userid}`);
+    const verifiedClaim = useVerifiedClaim(`${account.app}:${account.userid}`, address);
 
     const scrollToActiveStage = () => {
         if (!timelineRef.current || !stageRef.current) { return }

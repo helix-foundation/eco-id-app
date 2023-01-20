@@ -39,7 +39,7 @@ const Register = ({ isActive }: RegisterProps) => {
     const ecoID = useEcoID();
 
     const { username, deadline, nonce, userid, fee, recipient, app, verifier, verifySig, setApp, setRecipient, setUserid, setUsername, setDeadline, setNonce, setVerifier, setVerifySig } = useContext(AccountContext);
-    const verifiedClaim = useVerifiedClaim(`${app}:${userid}`);
+    const verifiedClaim = useVerifiedClaim(`${app}:${userid}`, address);
 
     const [approvedAmount, setApprovedAmount] = useState<BigNumber>(BigNumber.from(0));
 

@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { constants } from "ethers";
 
 export type VerifiedClaim = {
     app: string;
@@ -11,11 +12,11 @@ export type VerifiedClaim = {
     } | null;
 }
 
-export const useVerifiedClaim = (claim: string): VerifiedClaim | null => {
+export const useVerifiedClaim = (claim: string, recipient: string): VerifiedClaim | null => {
 
     const { data, loading, error, startPolling } = useQuery(VERIFIED_CLAIM, {
         variables: {
-            id: claim
+            id: `${claim}-${recipient?.toLowerCase()}`
         },
         pollInterval: 5000
     });
@@ -28,7 +29,7 @@ export const useVerifiedClaim = (claim: string): VerifiedClaim | null => {
     }
     else if (data && data.verifiedClaim) {
 
-        const [app, userid] = data.verifiedClaim.id.split(':');
+        const [app, userid] = data.verifiedClaim.claim.id.split(':');
 
         verifiedClaim = {
             ...data.verifiedClaim,
@@ -43,7 +44,9 @@ export const useVerifiedClaim = (claim: string): VerifiedClaim | null => {
 const VERIFIED_CLAIM = gql`
     query Globals($id: String) {
         verifiedClaim(id: $id) {
-            id
+            claim {
+                id
+            }
             recipient
             verifiers {
                 address

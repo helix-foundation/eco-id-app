@@ -52,7 +52,7 @@ const NFTViewer = ({ isVisible = false }: NFTViewerProps) => {
     const [points, setPoints] = useState<BigNumber>(BigNumber.from(0))
 
     const [claim, setClaim] = useState("");
-    const verifiedClaim = useVerifiedClaim(claim);
+    const verifiedClaim = useVerifiedClaim(claim, address);
     const [metadata, setMetadata] = useState<Metadata | null>(null);
     const [imageIsLoaded, setImageIsLoaded] = useState(false);
 

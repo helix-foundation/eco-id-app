@@ -33,7 +33,7 @@ const Mint = ({ isActive }: MintProps) => {
     const ecoID = useEcoID();
 
     const { userid, fee, recipient, app } = useContext(AccountContext);
-    const verifiedClaim = useVerifiedClaim(`${app}:${userid}`);
+    const verifiedClaim = useVerifiedClaim(`${app}:${userid}`, address);
 
     const [approvedAmount, setApprovedAmount] = useState<BigNumber>(BigNumber.from(0));
 
