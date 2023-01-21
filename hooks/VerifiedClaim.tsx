@@ -16,7 +16,7 @@ export const useVerifiedClaim = (claim: string, recipient: string): VerifiedClai
 
     const { data, loading, error, startPolling } = useQuery(VERIFIED_CLAIM, {
         variables: {
-            id: `${claim}-${recipient?.toLowerCase()}`
+            id: claim
         },
         pollInterval: 5000
     });
@@ -27,12 +27,13 @@ export const useVerifiedClaim = (claim: string, recipient: string): VerifiedClai
     if (error) {
         console.log(error);
     }
-    else if (data && data.verifiedClaim) {
+    else if (data && data.claim && data.claim.verifiedClaims.length) {
+        const [app, userid] = data.claim.id.split(':');
 
-        const [app, userid] = data.verifiedClaim.claim.id.split(':');
-
+        // prioritize the verifiedClaim for the current recipient but fallback to use any other
+        const index = data.claim.verifiedClaims.findIndex((claim) => claim.recipient === recipient);
         verifiedClaim = {
-            ...data.verifiedClaim,
+            ...(data.claim.verifiedClaims[index > -1 ? index : 0]),
             app,
             userid,
         }
@@ -42,19 +43,19 @@ export const useVerifiedClaim = (claim: string, recipient: string): VerifiedClai
 }
 
 const VERIFIED_CLAIM = gql`
-    query Globals($id: String) {
-        verifiedClaim(id: $id) {
-            claim {
-                id
-            }
-            recipient
-            verifiers {
-                address
-                revocable
-            }
-            nft {
-                tokenID
-                tokenURI
+    query VerifiedClaim($id: String) {
+        claim(id: $id) {
+            id
+            verifiedClaims {
+                recipient
+                verifiers {
+                    address
+                    revocable
+                }
+                nft {
+                    tokenID
+                    tokenURI
+                }
             }
         }
     }
