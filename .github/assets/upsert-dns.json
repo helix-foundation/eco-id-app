@@ -1,0 +1,18 @@
+{
+    "Comment": "Update record with new TXT value",
+    "Changes": [
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "_dnslink.<domain>.",
+                "Type": "TXT",
+                "TTL": 60,
+                "ResourceRecords": [
+                    {
+                        "Value": "\"dnslink=/ipfs/<hash>\""
+                    }
+                ]
+            }
+        }
+    ]
+}
